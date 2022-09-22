@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+late final Isar isar;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // for isar
+  final isarDir = await getApplicationDocumentsDirectory();
+  print(isarDir);
+  // isar = await Isar.open([IsarShorcutListCollectionSchema],
+  //     directory: isarDir.path);
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
