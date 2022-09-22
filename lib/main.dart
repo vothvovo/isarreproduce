@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:isarreproduce/isar_shortcut_list.dart';
+import 'package:isarreproduce/shortcut_list_repository.dart';
+import 'package:isarreproduce/shortcut_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 late final Isar isar;
@@ -112,6 +115,17 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            OutlinedButton(
+                onPressed: (() {
+                  ShortcutListRepository().writeShortcutModelList('test', [
+                    const ShortcutModel(
+                      triggerList: [LogicalKeyboardKey.keyA],
+                      command: 'command',
+                      category: 'category',
+                    )
+                  ]);
+                }),
+                child: const Text('writeShortcutModelList'))
           ],
         ),
       ),
