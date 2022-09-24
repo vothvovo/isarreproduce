@@ -7,7 +7,7 @@ part of 'isar_shortcut_list.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_locals
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 extension GetIsarShorcutListCollectionCollection on Isar {
   IsarCollection<IsarShorcutListCollection> get isarShorcutListCollections =>
@@ -31,12 +31,9 @@ const IsarShorcutListCollectionSchema = CollectionSchema(
     )
   },
   estimateSize: _isarShorcutListCollectionEstimateSize,
-  serializeNative: _isarShorcutListCollectionSerializeNative,
-  deserializeNative: _isarShorcutListCollectionDeserializeNative,
-  deserializePropNative: _isarShorcutListCollectionDeserializePropNative,
-  serializeWeb: _isarShorcutListCollectionSerializeWeb,
-  deserializeWeb: _isarShorcutListCollectionDeserializeWeb,
-  deserializePropWeb: _isarShorcutListCollectionDeserializePropWeb,
+  serialize: _isarShorcutListCollectionSerialize,
+  deserialize: _isarShorcutListCollectionDeserialize,
+  deserializeProp: _isarShorcutListCollectionDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
@@ -49,7 +46,7 @@ const IsarShorcutListCollectionSchema = CollectionSchema(
   getId: _isarShorcutListCollectionGetId,
   getLinks: _isarShorcutListCollectionGetLinks,
   attach: _isarShorcutListCollectionAttach,
-  version: '3.0.0-dev.13',
+  version: '3.0.0',
 );
 
 int _isarShorcutListCollectionEstimateSize(
@@ -81,9 +78,9 @@ int _isarShorcutListCollectionEstimateSize(
   return bytesCount;
 }
 
-int _isarShorcutListCollectionSerializeNative(
+void _isarShorcutListCollectionSerialize(
   IsarShorcutListCollection object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -91,15 +88,14 @@ int _isarShorcutListCollectionSerializeNative(
   writer.writeObjectList<IsarShortcut>(
     offsets[1],
     allOffsets,
-    IsarShortcutSchema.serializeNative,
+    IsarShortcutSchema.serialize,
     object.isarShortcutList,
   );
-  return writer.usedBytes;
 }
 
-IsarShorcutListCollection _isarShorcutListCollectionDeserializeNative(
+IsarShorcutListCollection _isarShorcutListCollectionDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -107,7 +103,7 @@ IsarShorcutListCollection _isarShorcutListCollectionDeserializeNative(
     appName: reader.readStringOrNull(offsets[0]),
     isarShortcutList: reader.readObjectList<IsarShortcut>(
       offsets[1],
-      IsarShortcutSchema.deserializeNative,
+      IsarShortcutSchema.deserialize,
       allOffsets,
       IsarShortcut(),
     ),
@@ -116,8 +112,8 @@ IsarShorcutListCollection _isarShorcutListCollectionDeserializeNative(
   return object;
 }
 
-P _isarShorcutListCollectionDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _isarShorcutListCollectionDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -128,33 +124,12 @@ P _isarShorcutListCollectionDeserializePropNative<P>(
     case 1:
       return (reader.readObjectList<IsarShortcut>(
         offset,
-        IsarShortcutSchema.deserializeNative,
+        IsarShortcutSchema.deserialize,
         allOffsets,
         IsarShortcut(),
       )) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Object _isarShorcutListCollectionSerializeWeb(
-    IsarCollection<IsarShorcutListCollection> collection,
-    IsarShorcutListCollection object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-IsarShorcutListCollection _isarShorcutListCollectionDeserializeWeb(
-    IsarCollection<IsarShorcutListCollection> collection, Object jsObj) {
-  /*final object = IsarShorcutListCollection(appName: IsarNative.jsObjectGet(jsObj, r'appName') ,isarShortcutList: (IsarNative.jsObjectGet(jsObj, r'isarShortcutList') as List?)?.map((e) => e ?? IsarShortcut()).toList().cast<IsarShortcut>() ,);object.id = IsarNative.jsObjectGet(jsObj, r'id') ?? (double.negativeInfinity as int);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _isarShorcutListCollectionDeserializePropWeb<P>(
-    Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
   }
 }
 
@@ -185,7 +160,7 @@ extension IsarShorcutListCollectionQueryWhereSort on QueryBuilder<
 extension IsarShorcutListCollectionQueryWhere on QueryBuilder<
     IsarShorcutListCollection, IsarShorcutListCollection, QWhereClause> {
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterWhereClause> idEqualTo(int id) {
+      QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -195,7 +170,7 @@ extension IsarShorcutListCollectionQueryWhere on QueryBuilder<
   }
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterWhereClause> idNotEqualTo(int id) {
+      QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -218,7 +193,7 @@ extension IsarShorcutListCollectionQueryWhere on QueryBuilder<
   }
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterWhereClause> idGreaterThan(int id, {bool include = false}) {
+      QAfterWhereClause> idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -227,7 +202,7 @@ extension IsarShorcutListCollectionQueryWhere on QueryBuilder<
   }
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterWhereClause> idLessThan(int id, {bool include = false}) {
+      QAfterWhereClause> idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -237,8 +212,8 @@ extension IsarShorcutListCollectionQueryWhere on QueryBuilder<
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
       QAfterWhereClause> idBetween(
-    int lowerId,
-    int upperId, {
+    Id lowerId,
+    Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -412,7 +387,7 @@ extension IsarShorcutListCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterFilterCondition> idEqualTo(int value) {
+      QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -423,7 +398,7 @@ extension IsarShorcutListCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
       QAfterFilterCondition> idGreaterThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -437,7 +412,7 @@ extension IsarShorcutListCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
       QAfterFilterCondition> idLessThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -451,8 +426,8 @@ extension IsarShorcutListCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
       QAfterFilterCondition> idBetween(
-    int lower,
-    int upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -477,27 +452,9 @@ extension IsarShorcutListCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterFilterCondition> isarShortcutListElementIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.elementIsNull(
-        property: r'isarShortcutList',
-      ));
-    });
-  }
-
-  QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
       QAfterFilterCondition> isarShortcutListIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isarShortcutList',
-      ));
-    });
-  }
-
-  QueryBuilder<IsarShorcutListCollection, IsarShorcutListCollection,
-      QAfterFilterCondition> isarShortcutListElementIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.elementIsNotNull(
         property: r'isarShortcutList',
       ));
     });
@@ -693,7 +650,7 @@ extension IsarShorcutListCollectionQueryProperty on QueryBuilder<
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_localså
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 const IsarShortcutSchema = Schema(
   name: r'IsarShortcut',
@@ -729,12 +686,9 @@ const IsarShortcutSchema = Schema(
     )
   },
   estimateSize: _isarShortcutEstimateSize,
-  serializeNative: _isarShortcutSerializeNative,
-  deserializeNative: _isarShortcutDeserializeNative,
-  deserializePropNative: _isarShortcutDeserializePropNative,
-  serializeWeb: _isarShortcutSerializeWeb,
-  deserializeWeb: _isarShortcutDeserializeWeb,
-  deserializePropWeb: _isarShortcutDeserializePropWeb,
+  serialize: _isarShortcutSerialize,
+  deserialize: _isarShortcutDeserialize,
+  deserializeProp: _isarShortcutDeserializeProp,
 );
 
 int _isarShortcutEstimateSize(
@@ -788,9 +742,9 @@ int _isarShortcutEstimateSize(
   return bytesCount;
 }
 
-int _isarShortcutSerializeNative(
+void _isarShortcutSerialize(
   IsarShortcut object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -799,27 +753,26 @@ int _isarShortcutSerializeNative(
   writer.writeObject<IsarIconData>(
     offsets[2],
     allOffsets,
-    IsarIconDataSchema.serializeNative,
+    IsarIconDataSchema.serialize,
     object.isarShortcutIcon,
   );
   writer.writeObject<IsarImage>(
     offsets[3],
     allOffsets,
-    IsarImageSchema.serializeNative,
+    IsarImageSchema.serialize,
     object.isarShortcutImage,
   );
   writer.writeObjectList<IsarLogicalKeyboardKey>(
     offsets[4],
     allOffsets,
-    IsarLogicalKeyboardKeySchema.serializeNative,
+    IsarLogicalKeyboardKeySchema.serialize,
     object.isarTriggerList,
   );
-  return writer.usedBytes;
 }
 
-IsarShortcut _isarShortcutDeserializeNative(
+IsarShortcut _isarShortcutDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -828,17 +781,17 @@ IsarShortcut _isarShortcutDeserializeNative(
     isarCommand: reader.readStringOrNull(offsets[1]),
     isarShortcutIcon: reader.readObjectOrNull<IsarIconData>(
       offsets[2],
-      IsarIconDataSchema.deserializeNative,
+      IsarIconDataSchema.deserialize,
       allOffsets,
     ),
     isarShortcutImage: reader.readObjectOrNull<IsarImage>(
       offsets[3],
-      IsarImageSchema.deserializeNative,
+      IsarImageSchema.deserialize,
       allOffsets,
     ),
     isarTriggerList: reader.readObjectList<IsarLogicalKeyboardKey>(
       offsets[4],
-      IsarLogicalKeyboardKeySchema.deserializeNative,
+      IsarLogicalKeyboardKeySchema.deserialize,
       allOffsets,
       IsarLogicalKeyboardKey(),
     ),
@@ -846,8 +799,8 @@ IsarShortcut _isarShortcutDeserializeNative(
   return object;
 }
 
-P _isarShortcutDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _isarShortcutDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -860,43 +813,24 @@ P _isarShortcutDeserializePropNative<P>(
     case 2:
       return (reader.readObjectOrNull<IsarIconData>(
         offset,
-        IsarIconDataSchema.deserializeNative,
+        IsarIconDataSchema.deserialize,
         allOffsets,
       )) as P;
     case 3:
       return (reader.readObjectOrNull<IsarImage>(
         offset,
-        IsarImageSchema.deserializeNative,
+        IsarImageSchema.deserialize,
         allOffsets,
       )) as P;
     case 4:
       return (reader.readObjectList<IsarLogicalKeyboardKey>(
         offset,
-        IsarLogicalKeyboardKeySchema.deserializeNative,
+        IsarLogicalKeyboardKeySchema.deserialize,
         allOffsets,
         IsarLogicalKeyboardKey(),
       )) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Object _isarShortcutSerializeWeb(
-    IsarCollection<IsarShortcut> collection, IsarShortcut object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-IsarShortcut _isarShortcutDeserializeWeb(
-    IsarCollection<IsarShortcut> collection, Object jsObj) {
-  /*final object = IsarShortcut(isarCategory: IsarNative.jsObjectGet(jsObj, r'isarCategory') ,isarCommand: IsarNative.jsObjectGet(jsObj, r'isarCommand') ,isarShortcutIcon: IsarNative.jsObjectGet(jsObj, r'isarShortcutIcon') ,isarShortcutImage: IsarNative.jsObjectGet(jsObj, r'isarShortcutImage') ,isarTriggerList: (IsarNative.jsObjectGet(jsObj, r'isarTriggerList') as List?)?.map((e) => e ?? IsarLogicalKeyboardKey()).toList().cast<IsarLogicalKeyboardKey>() ,);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _isarShortcutDeserializePropWeb<P>(Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
   }
 }
 
@@ -1256,27 +1190,9 @@ extension IsarShortcutQueryFilter
   }
 
   QueryBuilder<IsarShortcut, IsarShortcut, QAfterFilterCondition>
-      isarTriggerListElementIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.elementIsNull(
-        property: r'isarTriggerList',
-      ));
-    });
-  }
-
-  QueryBuilder<IsarShortcut, IsarShortcut, QAfterFilterCondition>
       isarTriggerListIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isarTriggerList',
-      ));
-    });
-  }
-
-  QueryBuilder<IsarShortcut, IsarShortcut, QAfterFilterCondition>
-      isarTriggerListElementIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.elementIsNotNull(
         property: r'isarTriggerList',
       ));
     });
@@ -1397,7 +1313,7 @@ extension IsarShortcutQueryObject
 }
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_localså
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 const IsarLogicalKeyboardKeySchema = Schema(
   name: r'IsarLogicalKeyboardKey',
@@ -1410,12 +1326,9 @@ const IsarLogicalKeyboardKeySchema = Schema(
     )
   },
   estimateSize: _isarLogicalKeyboardKeyEstimateSize,
-  serializeNative: _isarLogicalKeyboardKeySerializeNative,
-  deserializeNative: _isarLogicalKeyboardKeyDeserializeNative,
-  deserializePropNative: _isarLogicalKeyboardKeyDeserializePropNative,
-  serializeWeb: _isarLogicalKeyboardKeySerializeWeb,
-  deserializeWeb: _isarLogicalKeyboardKeyDeserializeWeb,
-  deserializePropWeb: _isarLogicalKeyboardKeyDeserializePropWeb,
+  serialize: _isarLogicalKeyboardKeySerialize,
+  deserialize: _isarLogicalKeyboardKeyDeserialize,
+  deserializeProp: _isarLogicalKeyboardKeyDeserializeProp,
 );
 
 int _isarLogicalKeyboardKeyEstimateSize(
@@ -1427,19 +1340,18 @@ int _isarLogicalKeyboardKeyEstimateSize(
   return bytesCount;
 }
 
-int _isarLogicalKeyboardKeySerializeNative(
+void _isarLogicalKeyboardKeySerialize(
   IsarLogicalKeyboardKey object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.isarLogicalKeyboardKeyId);
-  return writer.usedBytes;
 }
 
-IsarLogicalKeyboardKey _isarLogicalKeyboardKeyDeserializeNative(
+IsarLogicalKeyboardKey _isarLogicalKeyboardKeyDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1449,8 +1361,8 @@ IsarLogicalKeyboardKey _isarLogicalKeyboardKeyDeserializeNative(
   return object;
 }
 
-P _isarLogicalKeyboardKeyDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _isarLogicalKeyboardKeyDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -1460,27 +1372,6 @@ P _isarLogicalKeyboardKeyDeserializePropNative<P>(
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Object _isarLogicalKeyboardKeySerializeWeb(
-    IsarCollection<IsarLogicalKeyboardKey> collection,
-    IsarLogicalKeyboardKey object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-IsarLogicalKeyboardKey _isarLogicalKeyboardKeyDeserializeWeb(
-    IsarCollection<IsarLogicalKeyboardKey> collection, Object jsObj) {
-  /*final object = IsarLogicalKeyboardKey(isarLogicalKeyboardKeyId: IsarNative.jsObjectGet(jsObj, r'isarLogicalKeyboardKeyId') ,);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _isarLogicalKeyboardKeyDeserializePropWeb<P>(
-    Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
   }
 }
 
@@ -1565,7 +1456,7 @@ extension IsarLogicalKeyboardKeyQueryObject on QueryBuilder<
     IsarLogicalKeyboardKey, IsarLogicalKeyboardKey, QFilterCondition> {}
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_localså
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 const IsarIconDataSchema = Schema(
   name: r'IsarIconData',
@@ -1578,12 +1469,9 @@ const IsarIconDataSchema = Schema(
     )
   },
   estimateSize: _isarIconDataEstimateSize,
-  serializeNative: _isarIconDataSerializeNative,
-  deserializeNative: _isarIconDataDeserializeNative,
-  deserializePropNative: _isarIconDataDeserializePropNative,
-  serializeWeb: _isarIconDataSerializeWeb,
-  deserializeWeb: _isarIconDataDeserializeWeb,
-  deserializePropWeb: _isarIconDataDeserializePropWeb,
+  serialize: _isarIconDataSerialize,
+  deserialize: _isarIconDataDeserialize,
+  deserializeProp: _isarIconDataDeserializeProp,
 );
 
 int _isarIconDataEstimateSize(
@@ -1595,19 +1483,18 @@ int _isarIconDataEstimateSize(
   return bytesCount;
 }
 
-int _isarIconDataSerializeNative(
+void _isarIconDataSerialize(
   IsarIconData object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.isarCodePoint);
-  return writer.usedBytes;
 }
 
-IsarIconData _isarIconDataDeserializeNative(
+IsarIconData _isarIconDataDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1617,8 +1504,8 @@ IsarIconData _isarIconDataDeserializeNative(
   return object;
 }
 
-P _isarIconDataDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _isarIconDataDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -1628,25 +1515,6 @@ P _isarIconDataDeserializePropNative<P>(
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Object _isarIconDataSerializeWeb(
-    IsarCollection<IsarIconData> collection, IsarIconData object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-IsarIconData _isarIconDataDeserializeWeb(
-    IsarCollection<IsarIconData> collection, Object jsObj) {
-  /*final object = IsarIconData(isarCodePoint: IsarNative.jsObjectGet(jsObj, r'isarCodePoint') ,);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _isarIconDataDeserializePropWeb<P>(Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
   }
 }
 
@@ -1731,7 +1599,7 @@ extension IsarIconDataQueryObject
     on QueryBuilder<IsarIconData, IsarIconData, QFilterCondition> {}
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, avoid_js_rounded_ints, prefer_final_localså
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
 const IsarImageSchema = Schema(
   name: r'IsarImage',
@@ -1744,12 +1612,9 @@ const IsarImageSchema = Schema(
     )
   },
   estimateSize: _isarImageEstimateSize,
-  serializeNative: _isarImageSerializeNative,
-  deserializeNative: _isarImageDeserializeNative,
-  deserializePropNative: _isarImageDeserializePropNative,
-  serializeWeb: _isarImageSerializeWeb,
-  deserializeWeb: _isarImageDeserializeWeb,
-  deserializePropWeb: _isarImageDeserializePropWeb,
+  serialize: _isarImageSerialize,
+  deserialize: _isarImageDeserialize,
+  deserializeProp: _isarImageDeserializeProp,
 );
 
 int _isarImageEstimateSize(
@@ -1767,19 +1632,18 @@ int _isarImageEstimateSize(
   return bytesCount;
 }
 
-int _isarImageSerializeNative(
+void _isarImageSerialize(
   IsarImage object,
-  IsarBinaryWriter writer,
+  IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.name);
-  return writer.usedBytes;
 }
 
-IsarImage _isarImageDeserializeNative(
+IsarImage _isarImageDeserialize(
   Id id,
-  IsarBinaryReader reader,
+  IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1789,8 +1653,8 @@ IsarImage _isarImageDeserializeNative(
   return object;
 }
 
-P _isarImageDeserializePropNative<P>(
-  IsarBinaryReader reader,
+P _isarImageDeserializeProp<P>(
+  IsarReader reader,
   int propertyId,
   int offset,
   Map<Type, List<int>> allOffsets,
@@ -1800,25 +1664,6 @@ P _isarImageDeserializePropNative<P>(
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Object _isarImageSerializeWeb(
-    IsarCollection<IsarImage> collection, IsarImage object) {
-  /*final jsObj = IsarNative.newJsObject();*/ throw UnimplementedError();
-}
-
-IsarImage _isarImageDeserializeWeb(
-    IsarCollection<IsarImage> collection, Object jsObj) {
-  /*final object = IsarImage(name: IsarNative.jsObjectGet(jsObj, r'name') ,);*/
-  //return object;
-  throw UnimplementedError();
-}
-
-P _isarImageDeserializePropWeb<P>(Object jsObj, String propertyName) {
-  switch (propertyName) {
-    default:
-      throw IsarError('Illegal propertyName');
   }
 }
 
